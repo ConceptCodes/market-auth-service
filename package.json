@@ -1,0 +1,46 @@
+{
+  "name": "auth-service",
+  "module": "src/index.ts",
+  "type": "module",
+  "scripts": {
+    "docker": "docker-compose -f docker-compose.yml up",
+    "build": "tsc --project tsconfig.json && tsc-alias",
+    "start": "bun run src/index.ts"
+  },
+  "devDependencies": {
+    "@types/bcrypt": "^5.0.2",
+    "@types/bun": "latest",
+    "@types/compression": "^1.7.5",
+    "@types/cookie-parser": "^1.4.8",
+    "@types/cors": "^2.8.17",
+    "@types/express": "^5.0.0",
+    "@types/jsonwebtoken": "^9.0.9"
+  },
+  "peerDependencies": {
+    "typescript": "^5.8.2"
+  },
+  "dependencies": {
+    "@t3-oss/env-core": "^0.12.0",
+    "bcrypt": "^5.1.1",
+    "compression": "^1.8.0",
+    "cookie-parser": "^1.4.7",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.7",
+    "drizzle-kit": "^0.30.5",
+    "drizzle-orm": "^0.40.1",
+    "drizzle-zod": "^0.7.0",
+    "express": "^4.21.2",
+    "helmet": "^8.1.0",
+    "http-status-code": "^2.1.0",
+    "http-status-codes": "^2.3.0",
+    "ioredis": "^5.6.0",
+    "jsonwebtoken": "^9.0.2",
+    "morgan-body": "^2.6.9",
+    "pg": "^8.14.1",
+    "postgres": "^3.4.5",
+    "resend": "^4.1.2",
+    "uuid": "^11.1.0",
+    "xss": "^1.0.15",
+    "zod": "^3.24.2"
+  }
+}

@@ -1,0 +1,49 @@
+{
+  "compilerOptions": {
+    "lib": ["ESNext", "DOM"],
+    "target": "ESNext",
+    "module": "ESNext",
+    "moduleDetection": "force",
+    "jsx": "react-jsx",
+    "allowJs": true,
+
+    "moduleResolution": "Node",
+    "verbatimModuleSyntax": true,
+
+    "esModuleInterop": true,
+    "resolveJsonModule": true,
+
+    "strict": true,
+    "skipLibCheck": true,
+    "noFallthroughCasesInSwitch": true,
+
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noPropertyAccessFromIndexSignature": false,
+
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["src/*"],
+      "@controller/*": ["src/controllers/*"],
+      "@schema/*": ["src/schemas/*"],
+      "@exception/*": ["src/exceptions/*"],
+      "@middleware/*": ["src/middleware/*"],
+      "@interface/*": ["src/interfaces/*"],
+      "@route/*": ["src/routes/*"],
+      "@service/*": ["src/services/*"],
+      "@lib/*": ["src/lib/*"]
+    },
+
+    "noImplicitAny": true,
+    "strictNullChecks": true,
+    "strictFunctionTypes": true,
+    "noImplicitThis": true,
+    "alwaysStrict": true,
+    "typeRoots": ["./types", "node_modules/@types", "./global.d.ts"],
+    "forceConsistentCasingInFileNames": true,
+    "noImplicitReturns": true,
+    "allowSyntheticDefaultImports": true
+  },
+  "include": ["src/**/*.ts"],
+  "exclude": ["node_modules", "**/*.spec.ts", "dist"]
+}
