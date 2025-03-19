@@ -43,6 +43,9 @@ bun install
 ```
 
 3. Environment Setup
+```bash
+cp .env.example .env
+```
 
 
 3. Run the application
@@ -54,6 +57,17 @@ bun run docker
 4. Access the application on `http://localhost:8000`
 
 ## API Endpoints
+
+### Health Check
+
+```
+GET /api/health/alive
+```
+```json
+{
+  "message": "Pong",
+}
+```
 
 ### User Registration
 
