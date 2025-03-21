@@ -7,7 +7,7 @@ export default {
   driver: "pglite",
   dialect: "postgresql",
   dbCredentials: {
-    url: env.DATABASE_URL,
+    url: `postgres://${env.DATABASE_USER}:${env.DATABASE_PASSWORD}@${env.DATABASE_HOST}:${env.DATABASE_PORT}/${env.DATABASE_NAME}`,
   },
   breakpoints: true,
 } satisfies Config;

@@ -1,12 +1,14 @@
 import { Resend } from "resend";
-import { env } from "@lib/env";
 import path from "path";
 import fs from "fs";
 import xss from "xss";
 
+import { env } from "@lib/env";
+import { createLogger } from "./logger";
+
+const logger = createLogger("email client");
 const resend = new Resend(env.RESEND_API_KEY);
 
-type Data = Record<string, string>;
 
 export type VerifyEmailData = {
   code: string;
@@ -17,6 +19,8 @@ export type WelcomeEmailData = {
 };
 
 export type ResetPasswordEmailData = VerifyEmailData;
+
+export type Data = WelcomeEmailData | VerifyEmailData | ResetPasswordEmailData;
 
 type Email = {
   [key: string]: {
@@ -57,7 +61,7 @@ const templates: Email = {
   },
 };
 
-export type Template = keyof typeof templates;
+export type Template = 'welcome' | 'verifyEmail' | 'resetPassword';
 
 export async function sendEmail(email: string, template: Template, data: Data) {
   try {
@@ -77,8 +81,9 @@ export async function sendEmail(email: string, template: Template, data: Data) {
       html,
     });
 
-    console.log(`Email sent to ${email}: ${res.data?.id}`);
+    logger.info({ email, id: res.data?.id }, "Email sent successfully");
   } catch (error) {
+    logger.error({ error }, "Error sending email");
     throw error;
   }
 }
@@ -88,6 +93,7 @@ export async function checkEmailHealth() {
     const { data } = await resend.domains.list();
     return data !== null;
   } catch (error) {
+    logger.error({ error }, "Error checking email health");
     return false;
   }
 }

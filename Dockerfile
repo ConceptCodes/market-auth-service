@@ -15,7 +15,6 @@ COPY --from=install /temp/dev/node_modules node_modules
 COPY . .
 
 FROM base AS release
-# Use dev dependencies instead of prod to include tsconfig-paths
 COPY --from=install /temp/dev/node_modules node_modules
 
 COPY --from=prerelease /usr/src/app/src ./src
@@ -24,5 +23,4 @@ COPY --from=prerelease /usr/src/app/tsconfig.json .
 
 USER bun
 EXPOSE 8000/tcp
-# Modified entrypoint to use tsconfig-paths/register
 ENTRYPOINT [ "bun", "run", "start"]

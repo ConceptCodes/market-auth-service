@@ -1,10 +1,16 @@
 import { drizzle } from "drizzle-orm/postgres-js";
 import { migrate } from "drizzle-orm/postgres-js/migrator";
 import postgres from "postgres";
-import { env } from "../env";
+import { env } from "@lib/env";
 
 const runMigrate = async () => {
-  const sql = postgres(env.DB_URL, { max: 1 });
+  const sql = postgres({
+    host: env.DB_HOST,
+    port: env.DB_PORT,
+    user: env.DB_USER,
+    password: env.DB_PASSWORD,
+    database: env.DB_NAME,
+  });
   const db = drizzle(sql);
 
   console.log("⏳ Running migrations...");

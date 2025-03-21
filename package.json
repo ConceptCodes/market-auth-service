@@ -5,7 +5,9 @@
   "scripts": {
     "docker": "docker-compose -f docker-compose.yml up",
     "build": "tsc --project tsconfig.json && tsc-alias",
-    "start": "bun run src/index.ts"
+    "start": "bun run src/index.ts",
+    "db:check": "bun run src/scripts/check-db.ts",
+    "db:migrate": "bun drizzle-kit migrate:pg"
   },
   "devDependencies": {
     "@types/bcrypt": "^5.0.2",
@@ -37,6 +39,8 @@
     "jsonwebtoken": "^9.0.2",
     "morgan-body": "^2.6.9",
     "pg": "^8.14.1",
+    "pino": "^9.6.0",
+    "pino-pretty": "^13.0.0",
     "postgres": "^3.4.5",
     "resend": "^4.1.2",
     "uuid": "^11.1.0",

@@ -14,10 +14,10 @@ export class HttpException extends Error {
 }
 
 export class InvalidLoginCredentials extends HttpException {
-  constructor() {
+  constructor(message?: string) {
     super(
       StatusCodes.BAD_REQUEST,
-      "Invalid login credentials",
+      message ?? "Invalid login credentials",
       "VALIDATION_ERROR"
     );
   }
@@ -54,18 +54,12 @@ export class ValidationError extends HttpException {
 }
 
 export class InternalError extends HttpException {
-  constructor() {
+  constructor(message?: string) {
     super(
       StatusCodes.INTERNAL_SERVER_ERROR,
-      "Something went wrong",
+      message ?? "Something went wrong",
       "INTERNAL_ERROR"
     );
-  }
-}
-
-export class CreateEntityError extends HttpException {
-  constructor(message?: string) {
-    super(StatusCodes.INTERNAL_SERVER_ERROR, message || "Create entity error");
   }
 }
 

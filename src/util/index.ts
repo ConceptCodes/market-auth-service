@@ -7,8 +7,9 @@ import { type User, userTable } from "@lib/db/schema";
 import { db } from "@lib/db";
 import { env } from "@lib/env";
 import type { Tokens } from "global";
+import type { VerifyEmailSchema } from "@/schema";
 
-export function takeFirst<T>(items: T[]) {
+export function takeFirst<T>(items: T[]): T | undefined {
   return items.at(0);
 }
 
@@ -22,7 +23,7 @@ export function takeFirstOrThrow<T>(items: T[]) {
   return first;
 }
 
-const getOtpKey = (email: string) => `otp:${email}`;
+export const getOtpKey = (email: string) => `otp:${email}`;
 
 export const generateOTPCode = async (email: string): Promise<string> => {
   const otp = Math.floor(100000 + Math.random() * 900000).toString();
@@ -31,14 +32,14 @@ export const generateOTPCode = async (email: string): Promise<string> => {
   return otp;
 };
 
-// export const verifyOTPCode = async (
-//   data: VerifyEmailSchema
-// ): Promise<boolean> => {
-//   const key = getOtpKey(data.email);
-//   const value = await get(key);
-//   console.log(value, data.code);
-//   return value == data.code;
-// };
+export const verifyOTPCode = async (
+  data: VerifyEmailSchema
+): Promise<boolean> => {
+  const key = getOtpKey(data.email);
+  const value = await get(key);
+  console.log(value, data.code);
+  return value == data.code;
+};
 
 export const doesUserExist = async (id: User["id"]): Promise<boolean> => {
   const users = await db

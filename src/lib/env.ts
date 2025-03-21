@@ -13,8 +13,8 @@ export const env = createEnv({
     DATABASE_HOST: z.string(),
     DATABASE_USER: z.string(),
     DATABASE_PASSWORD: z.string(),
-    DATABASE_DB: z.string(),
-    DATABASE_URL: z.string().url(),
+    DATABASE_PORT: z.coerce.number().int().positive().default(5432),
+    DATABASE_NAME: z.string(),
 
     JWT_SECRET: z.string().min(10),
     JWT_REFRESH_SECRET: z.string().min(10),
@@ -25,7 +25,7 @@ export const env = createEnv({
       return x.endsWith("m") || x.endsWith("h") || x.endsWith("d");
     }),
 
-    RESEND_API_KEY: z.string().optional(),
+    RESEND_API_KEY: z.string(),
 
     REDIS_HOST: z.string(),
     REDIS_PORT: z.coerce.number().int().positive(),
@@ -34,7 +34,7 @@ export const env = createEnv({
 
     CORS_ORIGIN: z.string().url().optional(),
     LOG_LEVEL: z
-      .enum(["error", "warn", "info", "http", "verbose", "debug", "silly"])
+      .enum(["error", "warn", "info", "http", "verbose", "debug",])
       .default("info"),
     RATE_LIMIT_WINDOW_MS: z.coerce.number().int().positive().default(900000),
     RATE_LIMIT_MAX: z.coerce.number().int().positive().default(100),

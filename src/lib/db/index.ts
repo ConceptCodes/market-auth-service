@@ -3,24 +3,33 @@ import { type Logger } from "drizzle-orm/logger";
 import postgres from "postgres";
 
 import { env } from "@lib/env";
+import { createLogger } from "@lib/logger";
+
+const logger = createLogger("db");
 
 class QueryLogger implements Logger {
   logQuery(query: string, params: unknown[]): void {
-    console.debug("___QUERY___");
-    console.debug(query);
-    console.debug(params);
-    console.debug("___END_QUERY___");
+    logger.debug({ query, params }, "___QUERY___");
   }
 }
 
-const client = postgres(env.DB_URL);
+logger.debug("Connecting to database");
+
+const client = postgres({
+  host: env.DATABASE_HOST,
+  port: env.DATABASE_PORT,
+  username: env.DATABASE_USER,
+  password: env.DATABASE_PASSWORD,
+  database: env.DATABASE_NAME,
+});
 
 export async function checkDatabaseHealth() {
   try {
+    logger.debug("Checking database connection");
     await client`SELECT 1`;
     return true;
   } catch (err) {
-    console.error(err);
+    logger.error({ err }, "Database is not healthy");
     return false;
   }
 }

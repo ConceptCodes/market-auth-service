@@ -1,16 +1,24 @@
 import type { NextFunction, Request, Response } from "express";
 import StatusCodes from "http-status-codes";
+import { createLogger } from "@lib/logger";
+
+const logger = createLogger("not-found-middleware");
 
 const notFoundMiddleware = (
-  request: Request,
-  response: Response,
+  req: Request,
+  res: Response,
   next: NextFunction
 ) => {
   try {
-    console.error(
-      `${request.ip} - ${request.method} - ${request.originalUrl} - ${StatusCodes.NOT_FOUND} - ${response.statusMessage}`
+    logger.error(
+      {
+        method: req.method,
+        url: req.originalUrl,
+        ip: req.ip,
+      },
+      `${req.ip} - ${req.method} - ${req.originalUrl} - ${StatusCodes.NOT_FOUND} - ${res.statusMessage}`
     );
-    response.status(StatusCodes.NOT_FOUND).send("404 Not Found");
+    res.status(StatusCodes.NOT_FOUND).send("404 Not Found");
   } catch (error) {
     next(error);
   }

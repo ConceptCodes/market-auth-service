@@ -2,22 +2,31 @@ import { StatusCodes } from "http-status-codes";
 import type { NextFunction, Request, Response } from "express";
 
 import { HttpException } from "@/exceptions";
+import { createLogger } from "@lib/logger";
+
+const logger = createLogger("error-middleware");
 
 const ErrorMiddleware = (
-  error: HttpException,
+  err: HttpException,
   req: Request,
   res: Response,
   next: NextFunction
 ) => {
   try {
-    const status: number = error.status || StatusCodes.SERVICE_UNAVAILABLE;
-    const message: string = error.message || "Error in the System";
-    console.error(
-      `[${req.id}] ${req.method} ${req.path} >> STATUS_CODE:: ${status} >> MESSAGE: ${message}`
+    const status: number = err.status || StatusCodes.SERVICE_UNAVAILABLE;
+    const message: string = err.message || "Error in the System";
+    logger.error(
+      {
+        method: req.method,
+        url: req.originalUrl,
+        ip: req.ip,
+        status,
+        message,
+        stack: err.stack,
+      },
+      `[${req.id}] ${req.method} ${req.path} ${message}`
     );
-    res.status(status).json({
-      message,
-    });
+    res.status(status).json({ message });
   } catch (error) {
     next(error);
   }

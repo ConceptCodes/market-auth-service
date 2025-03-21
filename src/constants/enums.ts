@@ -1,6 +1,7 @@
 export enum Services {
-  DATABASE = "Database",
-  RESEND = "Resend",
+  DATABASE,
+  RESEND,
+  REDIS,
 }
 
 export enum ErrorCodes {

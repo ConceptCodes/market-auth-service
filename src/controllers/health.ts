@@ -1,6 +1,6 @@
 import type { Request, Response, NextFunction } from "express";
-import HealthService from "@/services/health";
 import { StatusCodes } from "http-status-codes";
+import HealthService from "@service/health";
 
 class HealthController {
   private healthService = new HealthService();

@@ -2,6 +2,9 @@ import type { RequestHandler } from "express";
 import { ZodError, ZodSchema } from "zod";
 
 import { InternalError, ValidationError } from "@/exceptions";
+import { createLogger } from "@lib/logger";
+
+const logger = createLogger("validation-middleware");
 
 const formatZodError = (error: ZodError) => {
   return error.errors
@@ -16,19 +19,13 @@ const ValidationMiddleware = <T>(
   type: "body" | "query" | "params" = "body"
 ): RequestHandler => {
   return async (req, _, next) => {
-    console.info(
-      `TASK:: Validation Middleware >> SUB_TASK:: Validating request ${type} against ${schema.description}`
-    );
+    logger.info({ type, schema: schema.description }, "Validating request");
     try {
       await schema.parseAsync(req[type]);
-      console.info(
-        `TASK:: Validation Middleware >> STATUS:: Request ${type} is valid`
-      );
+      logger.info({ type }, "Validation successful");
       next();
     } catch (error) {
-      console.warn(
-        `TASK:: Validation Middleware >> STATUS:: Error parsing request ${type}`
-      );
+      logger.error({ error }, "Validation failed");
       if (error instanceof ZodError) {
         const errors = formatZodError(error);
         next(new ValidationError(errors));

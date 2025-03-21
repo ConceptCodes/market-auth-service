@@ -6,8 +6,7 @@ import {
   timestamp,
   pgEnum,
 } from "drizzle-orm/pg-core";
-import { sql } from "drizzle-orm"
-import { createInsertSchema } from "drizzle-zod";
+import { sql } from "drizzle-orm";
 
 export const RoleEnum = pgEnum("role_enum", ["admin", "user"]);
 
@@ -25,5 +24,4 @@ export const userTable = pgTable("users", {
   ),
 });
 
-export const insertUserSchema = createInsertSchema(userTable);
 export type User = typeof userTable.$inferSelect;

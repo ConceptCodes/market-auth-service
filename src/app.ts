@@ -8,10 +8,12 @@ import morganBody from "morgan-body";
 import errorMiddleware from "@middleware/error";
 import notFoundMiddleware from "@middleware/notFound";
 import traceIdMiddleware from "@middleware/trace";
+import rateLimitMiddleware from "@middleware/rateLimit";
+import loggerMiddleware from "@middleware/logger";
 import type { Routes } from "@/constants";
 import { env } from "@lib/env";
 import { connectToRedis } from "@lib/redis";
-import rateLimitMiddleware from "./middleware/rateLimit";
+import logger from "@lib/logger";
 
 class App {
   public app: any;
@@ -25,19 +27,19 @@ class App {
 
     this.initializeRedis();
     this.initializeMiddleware();
-    this.initializeNotFoundHandling();
-    this.initializeErrorHandling();
     this.initializeRoutes(routes);
+    this.initializeErrorHandling();
+    this.initializeNotFoundHandling();
   }
 
   public listen(): void {
     this.app.listen(this.port as number, () => {
-      console.info("=====================================================");
-      console.info(`================= ENV: ${this.env} ==================`);
-      console.info(
-        `===== Auth Service listening on PORT: ${this.port} ========`
+      logger.info("=====================================================");
+      logger.info(
+        { env: this.env, port: this.port },
+        "===== Auth Service started ========"
       );
-      console.info("=====================================================");
+      logger.info("=====================================================");
     });
   }
 
@@ -48,6 +50,7 @@ class App {
   private initializeMiddleware(): void {
     this.app.use(traceIdMiddleware);
     this.app.use(rateLimitMiddleware);
+    this.app.use(loggerMiddleware);
     this.app.use(express.json());
     this.app.use(cors());
     this.app.use(helmet());
